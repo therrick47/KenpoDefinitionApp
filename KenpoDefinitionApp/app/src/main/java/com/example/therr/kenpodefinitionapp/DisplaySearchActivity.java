@@ -14,8 +14,10 @@ public class DisplaySearchActivity extends AppCompatActivity {
 
         Intent intent = getIntent();
         String msg = intent.getStringExtra(MainActivity.EXTRA_MESSAGE);
-
+        String arrItem = intent.getStringExtra(MainActivity.EXTRA_ARRAY_ITEM);
         TextView vwSearch = (TextView) findViewById(R.id.txtTermSearched);
+        TextView derp = (TextView) findViewById(R.id.textView3);
         vwSearch.setText(msg);
+        derp.setText(arrItem);
     }
 }
