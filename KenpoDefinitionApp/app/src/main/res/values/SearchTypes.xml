@@ -2,7 +2,7 @@
 <resources>
     <string-array name="searchArr">
         <item>Name</item>
-        <item>Description</item>
+        <item>Definition</item>
         <item>All</item>
     </string-array>
 </resources>
