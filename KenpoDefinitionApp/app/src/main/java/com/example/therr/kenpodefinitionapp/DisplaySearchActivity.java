@@ -12,6 +12,8 @@ import android.widget.TextView;
 
 import java.io.Console;
 import java.util.ArrayList;
+import java.util.Collections;
+import java.util.Comparator;
 
 public class DisplaySearchActivity extends AppCompatActivity {
 
@@ -22,7 +24,7 @@ public class DisplaySearchActivity extends AppCompatActivity {
 
     private boolean viewAll=false;
     private ArrayList<Terminology> termArr=new ArrayList<Terminology>();
-    private String msg="";
+    private String term="";
     private String arrItem="";
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -31,34 +33,46 @@ public class DisplaySearchActivity extends AppCompatActivity {
 
         TextView vwSearch = (TextView) findViewById(R.id.txtTermSearched);
         Intent intent = getIntent();
-        viewAll = intent.getBooleanExtra(MainActivity.EXTRA_TYPE, true);
+        viewAll = intent.getBooleanExtra(MainActivity.EXTRA_SEARCH_ALL, true);
         listView = (ListView) findViewById(R.id.vwArrList);
         ArrayAdapter<Terminology> arrayAdapter;
         termArr=(ArrayList<Terminology>) intent.getSerializableExtra(MainActivity.EXTRA_ARRAY_LIST);
         valList = termArr;
-
+         Collections.sort(valList,(new Comparator<Terminology>() {
+            @Override
+            public int compare(Terminology o1, Terminology o2) {
+                return o1.getName().compareTo(o2.getName());
+            }
+        }));
         if (viewAll) {
             vwSearch.setText("ALL");
             arrayAdapter = new ArrayAdapter<Terminology>(this, android.R.layout.simple_list_item_1, valList);
         } else {
-            msg = intent.getStringExtra(MainActivity.EXTRA_MESSAGE);
+            term = intent.getStringExtra(MainActivity.EXTRA_MESSAGE);
             arrItem = intent.getStringExtra(MainActivity.EXTRA_ARRAY_ITEM);
             ArrayList<Terminology> subList = new ArrayList<Terminology>();
             if (arrItem.equals("Name")) {
                 for (int a = 0; a < valList.size(); a++) {
-                    if (valList.get(a).getName().equals(msg)) {
+                    if (valList.get(a).getName().toLowerCase().contains(term.toLowerCase())) {
                         subList.add(valList.get(a));
                     }
                 }
-            } else if (arrItem.equals("Description")) {
+            } else if (arrItem.equals("Definition")) {
                 for (int a = 0; a < valList.size(); a++) {
-                    if (valList.get(a).getDef().equals(msg)) {
+                    if (valList.get(a).getDef().toLowerCase().contains(term.toLowerCase())) {
+                        subList.add(valList.get(a));
+                    }
+                }
+            }
+            else if(arrItem.equals("Belt")){
+                for (int a = 0; a < valList.size(); a++) {
+                    if (valList.get(a).getBelt().toLowerCase().contains(term.toLowerCase())) {
                         subList.add(valList.get(a));
                     }
                 }
             }
             arrayAdapter = new ArrayAdapter<Terminology>(this, android.R.layout.simple_list_item_1, subList);
-            vwSearch.setText("Searching for: " + msg);
+            vwSearch.setText("Searching for: " + term);
         }
 
         listView.setAdapter(arrayAdapter);
@@ -68,10 +82,10 @@ public class DisplaySearchActivity extends AppCompatActivity {
                 Intent intent = new Intent(DisplaySearchActivity.this, DisplayItem.class);
                 intent.putExtra(SEND_ITEM, (Terminology) parent.getItemAtPosition(position));
 
-                intent.putExtra(MainActivity.EXTRA_TYPE,viewAll);
+                intent.putExtra(MainActivity.EXTRA_SEARCH_ALL,viewAll);
                 intent.putExtra(MainActivity.EXTRA_ARRAY_LIST,termArr);
                 if(!viewAll){
-                    intent.putExtra(MainActivity.EXTRA_MESSAGE,msg);
+                    intent.putExtra(MainActivity.EXTRA_MESSAGE,term);
                     intent.putExtra(MainActivity.EXTRA_ARRAY_ITEM,arrItem);
                 }
                 startActivity(intent);

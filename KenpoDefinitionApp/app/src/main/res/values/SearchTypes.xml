@@ -3,6 +3,7 @@
     <string-array name="searchArr">
         <item>Name</item>
         <item>Definition</item>
+        <item>Belt</item>
         <item>All</item>
     </string-array>
 </resources>

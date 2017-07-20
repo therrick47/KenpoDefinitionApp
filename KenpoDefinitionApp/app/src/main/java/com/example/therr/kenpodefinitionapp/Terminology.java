@@ -9,10 +9,12 @@ import java.io.Serializable;
 public class Terminology implements Serializable {
     private String name;
     private String def;
+    private String belt;
 
-    public Terminology(String newName, String newDef){
+    public Terminology(String newName, String newDef, String newBelt){
         name=newName;
         def=newDef;
+        belt=newBelt;
     }
 
     public String getDef() {
@@ -29,6 +31,14 @@ public class Terminology implements Serializable {
 
     public void setName(String name) {
         this.name = name;
+    }
+
+    public void setBelt(String belt) {
+        this.belt = belt;
+    }
+
+    public String getBelt() {
+        return belt;
     }
 
     @Override
