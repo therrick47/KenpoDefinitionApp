@@ -51,20 +51,21 @@ public class DisplaySearchActivity extends AppCompatActivity {
             term = intent.getStringExtra(MainActivity.EXTRA_MESSAGE);
             arrItem = intent.getStringExtra(MainActivity.EXTRA_ARRAY_ITEM);
             ArrayList<Terminology> subList = new ArrayList<Terminology>();
-            if (arrItem.equals("Name")) {
+            if (arrItem.equals("Name") || arrItem.equals("All")) {
                 for (int a = 0; a < valList.size(); a++) {
                     if (valList.get(a).getName().toLowerCase().contains(term.toLowerCase())) {
                         subList.add(valList.get(a));
                     }
                 }
-            } else if (arrItem.equals("Definition")) {
+            }
+            if (arrItem.equals("Definition") || arrItem.equals("All")) {
                 for (int a = 0; a < valList.size(); a++) {
                     if (valList.get(a).getDef().toLowerCase().contains(term.toLowerCase())) {
                         subList.add(valList.get(a));
                     }
                 }
             }
-            else if(arrItem.equals("Belt")){
+            if (arrItem.equals("Belt") || arrItem.equals("All")) {
                 for (int a = 0; a < valList.size(); a++) {
                     if (valList.get(a).getBelt().toLowerCase().contains(term.toLowerCase())) {
                         subList.add(valList.get(a));
@@ -72,7 +73,6 @@ public class DisplaySearchActivity extends AppCompatActivity {
                 }
             }
             arrayAdapter = new ArrayAdapter<Terminology>(this, android.R.layout.simple_list_item_1, subList);
-            vwSearch.setText("Searching for: " + term);
         }
 
         listView.setAdapter(arrayAdapter);
