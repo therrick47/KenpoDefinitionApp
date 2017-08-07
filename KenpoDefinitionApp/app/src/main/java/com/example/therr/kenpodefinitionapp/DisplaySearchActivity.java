@@ -22,10 +22,8 @@ public class DisplaySearchActivity extends AppCompatActivity {
     private ArrayList<Terminology> valList;
 
 
-    private boolean viewAll=false;
     private ArrayList<Terminology> termArr=new ArrayList<Terminology>();
     private String term="";
-    private String arrItem="";
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -33,10 +31,10 @@ public class DisplaySearchActivity extends AppCompatActivity {
 
         TextView vwSearch = (TextView) findViewById(R.id.txtTermSearched);
         Intent intent = getIntent();
-        viewAll = intent.getBooleanExtra(MainActivity.EXTRA_SEARCH_ALL, true);
         listView = (ListView) findViewById(R.id.vwArrList);
         ArrayAdapter<Terminology> arrayAdapter;
         termArr=(ArrayList<Terminology>) intent.getSerializableExtra(MainActivity.EXTRA_ARRAY_LIST);
+        term=intent.getStringExtra(MainActivity.EXTRA_MESSAGE);
         valList = termArr;
          Collections.sort(valList,(new Comparator<Terminology>() {
             @Override
@@ -44,32 +42,16 @@ public class DisplaySearchActivity extends AppCompatActivity {
                 return o1.getName().compareTo(o2.getName());
             }
         }));
-        if (viewAll) {
-            vwSearch.setText("ALL");
+        if (term == null) {
             arrayAdapter = new ArrayAdapter<Terminology>(this, android.R.layout.simple_list_item_1, valList);
         } else {
             term = intent.getStringExtra(MainActivity.EXTRA_MESSAGE);
-            arrItem = intent.getStringExtra(MainActivity.EXTRA_ARRAY_ITEM);
             ArrayList<Terminology> subList = new ArrayList<Terminology>();
-            if (arrItem.equals("Name") || arrItem.equals("All")) {
-                for (int a = 0; a < valList.size(); a++) {
-                    if (valList.get(a).getName().toLowerCase().contains(term.toLowerCase())) {
-                        subList.add(valList.get(a));
-                    }
-                }
-            }
-            if (arrItem.equals("Definition") || arrItem.equals("All")) {
-                for (int a = 0; a < valList.size(); a++) {
-                    if (valList.get(a).getDef().toLowerCase().contains(term.toLowerCase())) {
-                        subList.add(valList.get(a));
-                    }
-                }
-            }
-            if (arrItem.equals("Belt") || arrItem.equals("All")) {
-                for (int a = 0; a < valList.size(); a++) {
-                    if (valList.get(a).getBelt().toLowerCase().contains(term.toLowerCase())) {
-                        subList.add(valList.get(a));
-                    }
+            for (int a = 0; a < valList.size(); a++) {
+                if (valList.get(a).getName().toLowerCase().contains(term.toLowerCase())
+                        || valList.get(a).getDef().toLowerCase().contains(term.toLowerCase())
+                        || valList.get(a).getBelt().toLowerCase().contains(term.toLowerCase())) {
+                    subList.add(valList.get(a));
                 }
             }
             arrayAdapter = new ArrayAdapter<Terminology>(this, android.R.layout.simple_list_item_1, subList);
@@ -82,12 +64,9 @@ public class DisplaySearchActivity extends AppCompatActivity {
                 Intent intent = new Intent(DisplaySearchActivity.this, DisplayItem.class);
                 intent.putExtra(SEND_ITEM, (Terminology) parent.getItemAtPosition(position));
 
-                intent.putExtra(MainActivity.EXTRA_SEARCH_ALL,viewAll);
                 intent.putExtra(MainActivity.EXTRA_ARRAY_LIST,termArr);
-                if(!viewAll){
-                    intent.putExtra(MainActivity.EXTRA_MESSAGE,term);
-                    intent.putExtra(MainActivity.EXTRA_ARRAY_ITEM,arrItem);
-                }
+                intent.putExtra(MainActivity.EXTRA_MESSAGE,term);
+
                 startActivity(intent);
             }
         });

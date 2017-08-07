@@ -10,7 +10,6 @@ import java.util.ArrayList;
 
 public class DisplayItem extends AppCompatActivity {
 
-    private boolean viewAll=false;
     private ArrayList<Terminology> termArr=new ArrayList<Terminology>();
     private String term="";
     private String arrItem="";
@@ -27,24 +26,18 @@ public class DisplayItem extends AppCompatActivity {
         termDef.setText(currItem.getDef());
         termBelt.setText(currItem.getBelt());
 
-        viewAll=intent.getBooleanExtra(MainActivity.EXTRA_SEARCH_ALL,true);
         termArr=(ArrayList<Terminology>) intent.getSerializableExtra(MainActivity.EXTRA_ARRAY_LIST);
-        if(!viewAll){
-            term = intent.getStringExtra(MainActivity.EXTRA_MESSAGE);
-            arrItem = intent.getStringExtra(MainActivity.EXTRA_ARRAY_ITEM);
-        }
+        term = intent.getStringExtra(MainActivity.EXTRA_MESSAGE);
+
     }
 
     @Override
     public boolean onOptionsItemSelected(MenuItem item) {
         if (item.getItemId() == android.R.id.home) {
             Intent intent=new Intent(DisplayItem.this,DisplaySearchActivity.class);
-            intent.putExtra(MainActivity.EXTRA_SEARCH_ALL,viewAll);
             intent.putExtra(MainActivity.EXTRA_ARRAY_LIST,termArr);
-            if(!viewAll){
-                intent.putExtra(MainActivity.EXTRA_MESSAGE, term);
-                intent.putExtra(MainActivity.EXTRA_ARRAY_ITEM,arrItem);
-            }
+            intent.putExtra(MainActivity.EXTRA_MESSAGE, term);
+
             startActivity(intent);
 
             return true;

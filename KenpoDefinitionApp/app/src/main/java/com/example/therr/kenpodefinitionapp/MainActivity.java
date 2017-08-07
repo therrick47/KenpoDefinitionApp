@@ -3,7 +3,9 @@ package com.example.therr.kenpodefinitionapp;
 import android.content.Intent;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
+import android.view.MotionEvent;
 import android.view.View;
+import android.view.inputmethod.InputMethodManager;
 import android.widget.ArrayAdapter;
 import android.widget.EditText;
 import android.widget.Spinner;
@@ -14,38 +16,35 @@ import java.util.ArrayList;
 public class MainActivity extends AppCompatActivity {
 
     public static final String EXTRA_MESSAGE = "com.example.therr.kenpodefinitionapp.MESSAGE";
-    public static final String EXTRA_ARRAY_ITEM = "com.example.therr.kenpodefinitionapp.ARRAYITEM";
-    public static final String EXTRA_SEARCH_ALL = "com.example.therr.kenpodefinitionapp.BOOLALL";
     public static final String EXTRA_ARRAY_LIST="com.example.therr.kenpodefinitionapp.ARRAYLISTVAL";
     public final ArrayList<Terminology> arrTerms = setTermArray();
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
-        Spinner searchTypeList = (Spinner) findViewById(R.id.searchType);
 
-        ArrayAdapter<CharSequence> adapter = ArrayAdapter.createFromResource(this,R.array.searchArr,android.R.layout.simple_spinner_item);
-        adapter.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item);
-        searchTypeList.setAdapter(adapter);
-        searchTypeList.setSelection(0);
+        findViewById(R.id.constraintLayout).setOnTouchListener(new View.OnTouchListener() {
+            @Override
+            public boolean onTouch(View v, MotionEvent event) {
+                InputMethodManager imm = (InputMethodManager) getSystemService(INPUT_METHOD_SERVICE);
+                imm.hideSoftInputFromWindow(getCurrentFocus().getWindowToken(), 0);
+                return true;
+            }
+        });
     }
+
     public void sendSearch(View view){
         Intent intent = new Intent(this,DisplaySearchActivity.class);
         EditText txtTerm = (EditText) findViewById(R.id.txtTerm);
-        Spinner searchTypeList = (Spinner) findViewById(R.id.searchType);
-        String arrItem = searchTypeList.getSelectedItem().toString();
         String term = txtTerm.getText().toString();
         if(term != "") {
             intent.putExtra(EXTRA_MESSAGE, term);
-            intent.putExtra(EXTRA_ARRAY_ITEM,arrItem);
-            intent.putExtra(EXTRA_SEARCH_ALL,false);
             intent.putExtra(EXTRA_ARRAY_LIST,arrTerms);
             startActivity(intent);
         }
     }
     public void sendAll(View view){
         Intent intent = new Intent(this,DisplaySearchActivity.class);
-        intent.putExtra(EXTRA_SEARCH_ALL,true);
         intent.putExtra(EXTRA_ARRAY_LIST,arrTerms);
         startActivity(intent);
     }
@@ -64,7 +63,7 @@ public class MainActivity extends AppCompatActivity {
         toReturn.add(new Terminology("Dojo","School","white"));
         toReturn.add(new Terminology("Kiai","Spirited or Concentrated yell","white"));
         toReturn.add(new Terminology("Bunkai","Interpretation or Application","white"));
-        toReturn.add(new Terminology("Kiyotske","Attention","white"));
+        toReturn.add(new Terminology("Kiyotsuke","Attention","white"));
         toReturn.add(new Terminology("Rei","Bow","white"));
         toReturn.add(new Terminology("Yoi","Ready","white"));
         toReturn.add(new Terminology("Waza","Techniques","gold"));
@@ -80,7 +79,7 @@ public class MainActivity extends AppCompatActivity {
         toReturn.add(new Terminology("Dan","Grading of rank held above black belt","purple"));
         toReturn.add(new Terminology("Sensei","Person born before another, Teacher, Master, based on age & experience","purple"));
         toReturn.add(new Terminology("Renshi","Honorific Title meaning Polished Instructor. (Skilled person or expert teacher). Can be awarded to 5th Dan and above.","purple"));
-        toReturn.add(new Terminology("Kyōshi","Honorific Title meaning an advanced teacher. (Senior Teacher/Expert). Can be awarded to 7th Dan and above.","purple"));
+        toReturn.add(new Terminology("Kyoshi","Honorific Title meaning an advanced teacher. (Senior Teacher/Expert). Can be awarded to 7th Dan and above.","purple"));
         toReturn.add(new Terminology("Shihan","Honorific Title meaning Master professor, chief instructor, Honorific Title","purple"));
         toReturn.add(new Terminology("Hanshi","Honorific Title meaning a senior expert considered a teacher of teachers, sometimes translated as Grand Master. Can be awarded to 8th Dan and above.","purple"));
         toReturn.add(new Terminology("Kusanku","Warrior General","black-3rd"));
@@ -92,7 +91,7 @@ public class MainActivity extends AppCompatActivity {
         toReturn.add(new Terminology("Iye","No","low brown"));
         toReturn.add(new Terminology("Wakarimas","I understand","low brown"));
         toReturn.add(new Terminology("Wakarimasen","I do not understand","low brown"));
-        toReturn.add(new Terminology("Hadari","Left","high blue"));
+        toReturn.add(new Terminology("Hidari","Left","high blue"));
         toReturn.add(new Terminology("Migi","Right","high blue"));
         toReturn.add(new Terminology("Yoko","Side","high blue"));
         toReturn.add(new Terminology("Hon","Fingers","high blue"));
@@ -116,9 +115,9 @@ public class MainActivity extends AppCompatActivity {
         toReturn.add(new Terminology("Ki/Chi","Inner Energy","green"));
         toReturn.add(new Terminology("Ohayo Gozaimas","Good Morning","green"));
         toReturn.add(new Terminology("Nukite","spear hand strike","green"));
-        toReturn.add(new Terminology("Kon Nichi Wa","Good Afternoon","green"));
+        toReturn.add(new Terminology("Kon'nichiwa","Good Afternoon","green"));
         toReturn.add(new Terminology("Kuzushi","to unbalance","green"));
-        toReturn.add(new Terminology("Kon Bon Ea","Good Evening","green"));
+        toReturn.add(new Terminology("Konbanwa","Good Evening","green"));
         toReturn.add(new Terminology("Empe/Empi","elbow","green"));
         toReturn.add(new Terminology("Jodan","high, ex. the head.","green"));
         toReturn.add(new Terminology("Chudan","middle, ex. chest and stomach area.","green"));
@@ -129,7 +128,7 @@ public class MainActivity extends AppCompatActivity {
         toReturn.add(new Terminology("Makiwara","Punching Board","orange"));
         toReturn.add(new Terminology("Arigato Gozaimas","Thank you","orange"));
         toReturn.add(new Terminology("Domo Arigato Gozaimas","Thank you Very much","orange"));
-        toReturn.add(new Terminology("Shimi Igiri Bo Ichi","Named after a person & a place, geographically the butt of the island","gold"));
+        toReturn.add(new Terminology("Shimi Igiri Bo Ichi","Named after a person & a place, geographically: the butt of the island","gold"));
         toReturn.add(new Terminology("Shuto","knife hand","gold"));
         toReturn.add(new Terminology("Tettsui Uchi","Hammer Fist","gold"));
         toReturn.add(new Terminology("Embusen","Pattern","gold"));
