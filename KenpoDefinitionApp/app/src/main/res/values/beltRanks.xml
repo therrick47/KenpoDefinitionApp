@@ -1,0 +1,14 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <string-array name="beltArr">
+        <item>White</item>
+        <item>Yellow</item>
+        <item>Orange</item>
+        <item>Green</item>
+        <item>Purple</item>
+        <item>Blue</item>
+        <item>High Blue</item>
+        <item>Low Brown</item>
+        <item>Black</item>
+    </string-array>
+</resources>

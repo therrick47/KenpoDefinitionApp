@@ -20,16 +20,16 @@ public class DisplaySearchActivity extends AppCompatActivity {
     public static final String SEND_ITEM = "com.example.therr.kenpodefinitionapp.ItemSend";
     private ListView listView;
     private ArrayList<Terminology> valList;
-
-
     private ArrayList<Terminology> termArr=new ArrayList<Terminology>();
     private String term="";
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_display_search);
 
-        TextView vwSearch = (TextView) findViewById(R.id.txtTermSearched);
+
+
         Intent intent = getIntent();
         listView = (ListView) findViewById(R.id.vwArrList);
         ArrayAdapter<Terminology> arrayAdapter;
@@ -43,9 +43,11 @@ public class DisplaySearchActivity extends AppCompatActivity {
             }
         }));
         if (term == null) {
+            getSupportActionBar().setTitle("Browsing All Definitions");
             arrayAdapter = new ArrayAdapter<Terminology>(this, android.R.layout.simple_list_item_1, valList);
         } else {
             term = intent.getStringExtra(MainActivity.EXTRA_MESSAGE);
+            getSupportActionBar().setTitle("Browsing: "+term);
             ArrayList<Terminology> subList = new ArrayList<Terminology>();
             for (int a = 0; a < valList.size(); a++) {
                 if (valList.get(a).getName().toLowerCase().contains(term.toLowerCase())
@@ -66,7 +68,6 @@ public class DisplaySearchActivity extends AppCompatActivity {
 
                 intent.putExtra(MainActivity.EXTRA_ARRAY_LIST,termArr);
                 intent.putExtra(MainActivity.EXTRA_MESSAGE,term);
-
                 startActivity(intent);
             }
         });

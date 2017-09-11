@@ -10,11 +10,21 @@ public class Terminology implements Serializable {
     private String name;
     private String def;
     private String belt;
+    private String phonetic;
 
-    public Terminology(String newName, String newDef, String newBelt){
+    public Terminology(String newName, String newDef, String newBelt,String phon){
         name=newName;
         def=newDef;
         belt=newBelt;
+        phonetic=phon;
+    }
+
+    public String getPhonetic() {
+        return phonetic;
+    }
+
+    public void setPhonetic(String phonetic) {
+        this.phonetic = phonetic;
     }
 
     public String getDef() {
